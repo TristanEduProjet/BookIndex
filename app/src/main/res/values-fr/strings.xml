@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_settings">Paramètres</string>
+    <string name="nav_settings">Paramètres</string>
+    <string name="nav_about">À propos</string>
+    <string name="nav_bookloan">Emprunts</string>
+    <string name="nav_help">Aide</string>
+    <string name="nav_other">Autre</string>
+    <string name="nav_save">Sauvegarder</string>
+    <string name="nav_search">Rechercher</string>
+    <string name="nav_send">Envoyer</string>
+    <string name="nav_share">Partager</string>
+</resources>
