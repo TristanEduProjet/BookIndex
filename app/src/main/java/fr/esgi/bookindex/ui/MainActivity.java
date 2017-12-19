@@ -6,6 +6,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,8 +51,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        this.getMenuInflater().inflate(R.menu.main_actionbar_menu, menu);
+        if (menu instanceof MenuBuilder)
+            ((MenuBuilder) menu).setOptionalIconsVisible(true);
+        this.getMenuInflater().inflate(R.menu.main_actionbar_menu, menu); // Inflate the menu; this adds items to the action bar if it is present.
         return true;
     }
 
@@ -62,6 +64,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // as you specify a parent activity in AndroidManifest.xml.
         switch(item.getItemId()) {
             case R.id.action_settings:
+                return true;
+            case R.id.action_save:
+                return true;
+            case R.id.action_export:
+                return true;
+            case R.id.action_send:
+                return true;
+            case R.id.action_share:
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -77,15 +87,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_bookloan:
                 break;
             case R.id.nav_settings:
-                break;
-
-            case R.id.nav_save:
-                break;
-            case R.id.nav_export:
-                break;
-            case R.id.nav_send:
-                break;
-            case R.id.nav_share:
                 break;
 
             case R.id.nav_about:
