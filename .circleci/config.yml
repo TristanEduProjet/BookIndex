@@ -6,7 +6,13 @@ jobs:
       - image: circleci/android:api-25-alpha
     environment:
       JVM_OPTS: -Xmx3200m
+    #branche:
+    #  ignore:
+    #    - /feature/*
     steps:
+      - run:
+          name: Correction android environment
+          command: sdkmanager "build-tools;27.0.2"
       - checkout
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
