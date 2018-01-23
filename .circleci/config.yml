@@ -194,28 +194,31 @@ workflows:
       - test:
           requires:
             - build_and_check
+      - tests_api:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                #- master
+                #- develop
+                #- hotfix.*
+                - disabled
       - test_api_23:
           requires:
-            - test
+            - tests_api
       - test_api_24:
           requires:
-            - test
+            - tests_api
       - test_api_25:
           requires:
-            - test
+            - tests_api
       - test_api_26:
           requires:
-            - test
+            - tests_api
       - test_api_27:
           requires:
-            - test
-#- tests_api:
-#    filters:
-#      branches:
-#        only:
-#          - master
-#          - develop
-#          - hotfix.*
+            - tests_api
 #- deploy_debug:
 #    requires:
 #      - build
