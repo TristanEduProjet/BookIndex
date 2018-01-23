@@ -54,7 +54,7 @@ jobs:
           path: app/build/outputs/apk
           destination: build
       - persist_to_workspace:
-          root: ~
+          root: ..
           paths:
             - code
 
@@ -72,7 +72,7 @@ jobs:
           name: Correction android environment
           command: sdkmanager "build-tools;27.0.2"
       - attach_workspace:
-          root: ~
+          at: ..
       - run:
           name: Run Tests
           command: ./gradlew test
