@@ -1,4 +1,4 @@
-defaults: &defaults
+config_env: &defaults
   working_directory: ~/code
   environment:
     JVM_OPTS: -Xmx3200m
@@ -19,6 +19,50 @@ config_cache_save: &config_cache_save
     #- ~/.gradle/cache/modules-2
     - ~/.m2
     #- $ANDROID_HOME/build-tools/27.0.2
+config_test_api: &config_test_api
+  <<: *defaults
+  steps:
+    - run:
+        name: Correction android environment
+        command: sdkmanager "build-tools;27.0.2"
+    - attach_workspace:
+        at: ..
+    - restore_cache:
+        <<: *config_cache
+    - run:
+        name: debug env
+        command: |
+            pwd
+            uname -a
+            lsb_release -a
+    - run:
+        name: Setup emulator
+        command: |
+            #sdkmanager "system-images;android-${API};google_apis;${IMG_ARCH}" &&
+            echo "no" | avdmanager create avd -n test -k "system-images;android-${API};google_apis;${IMG_ARCH}"
+    - run:
+        name: Launch emulator
+        command: |
+            export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64;${ANDROID_HOME}/emulator/lib64/qt/lib
+            emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on
+        background: true
+    - run:
+        name: Wait emulator start
+        command: |
+            circle-android wait-for-boot
+            sleep 30
+            adb shell input keyevent 82
+    - run:
+        name: Run tests on emulator
+        command: ./gradlew connectedAndroidTest
+    - store_artifacts:
+        path: app/build/reports
+        destination: reports
+    - store_test_results:
+        path: app/build/outputs/androidTest-results
+    - store_artifacts:
+        path: app/build/outputs/androidTest-results
+        destination: androidTest-results
 
 version: 2
 jobs:
@@ -86,6 +130,46 @@ jobs:
       - save_cache:
           <<: *config_cache_save
 
+  test_api_23:
+    <<: *config_test_api
+    environment:
+      API: 23
+      IMG_ARCH: armeabi-v7a
+    docker:
+      - image: circleci/android:api-23-alpha
+
+  test_api_24:
+    <<: *config_test_api
+    environment:
+      API: 24
+      IMG_ARCH: armeabi-v7a
+    docker:
+      - image: circleci/android:api-24-alpha
+
+  test_api_25:
+    <<: *config_test_api
+    environment:
+      API: 25
+      IMG_ARCH: armeabi-v7a
+    docker:
+      - image: circleci/android:api-25-alpha
+
+  test_api_26:
+    <<: *config_test_api
+    environment:
+      API: 26
+      IMG_ARCH: x86_64
+    docker:
+      - image: circleci/android:api-26-alpha
+
+  test_api_27:
+    <<: *config_test_api
+    environment:
+      API: 27
+      IMG_ARCH: x86
+    docker:
+      - image: circleci/android:api-27-alpha
+
 workflows:
   version: 2
   build_check_test:
@@ -94,3 +178,43 @@ workflows:
       - test:
           requires:
             - build_and_check
+      - test_api_23:
+          requires:
+            - test
+      - test_api_24:
+          requires:
+            - test
+      - test_api_25:
+          requires:
+            - test
+      - test_api_26:
+          requires:
+            - test
+      - test_api_27:
+          requires:
+            - test
+#- tests_api:
+#    filters:
+#      branches:
+#        only:
+#          - master
+#          - develop
+#          - hotfix.*
+#- deploy_debug:
+#    requires:
+#      - build
+#      - test
+#      - test_api
+#    filters:
+#      branches:
+#        only: develop
+#- deploy:
+#    requires:
+#      - build
+#      - test
+#      - test_api
+#    filters:
+#      branches:
+#        only:
+#          - master
+#          - hotfix.*
