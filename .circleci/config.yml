@@ -14,7 +14,9 @@ config_cache_save: &config_cache_save
   <<: *config_cache
   #when: always
   paths:
-    - ~/.gradle/cache/modules-2
+    - ~/.gradle
+    #- ~/.gradle/wrapper/dists
+    #- ~/.gradle/cache/modules-2
     - ~/.m2
     #- $ANDROID_HOME/build-tools/27.0.2
 
@@ -28,12 +30,12 @@ jobs:
     #  ignore:
     #    - /feature/*
     steps:
-      - restore_cache:
-          <<: *config_cache_restore
       - run:
           name: Correction android environment
           command: sdkmanager "build-tools;27.0.2"
       - checkout
+      - restore_cache:
+          <<: *config_cache_restore
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
@@ -66,13 +68,13 @@ jobs:
     #  ignore:
     #    - /feature/*
     steps:
-      - restore_cache:
-          <<: *config_cache_restore
       - run:
           name: Correction android environment
           command: sdkmanager "build-tools;27.0.2"
       - attach_workspace:
           at: ..
+      - restore_cache:
+          <<: *config_cache_restore
       - run:
           name: Run Tests
           command: ./gradlew test
