@@ -29,23 +29,41 @@ config_test_api: &config_test_api
         at: ..
     - restore_cache:
         <<: *config_cache
+    - restore_cache:
+        #key: android-img-{{ checksum .cicleci/config.yml }}
+        key: android-img-test
     - run:
         name: debug env
         command: |
             pwd
             uname -a
+            uname -m
             lsb_release -a
+            emulator -version
     - run:
         name: Setup emulator
         command: |
-            #sdkmanager "system-images;android-${API};google_apis;${IMG_ARCH}" &&
-            echo "no" | avdmanager create avd -n test -k "system-images;android-${API};google_apis;${IMG_ARCH}"
+            sdkmanager --update
+            ARCH=$(uname -m)
+            sdkmanager "system-images;android-${API};google_apis;${ARCH}"
+            if [ $? -ne 0 ] && [ "$ARCH" = "x86_64" ]; then sdkmanager "system-images;android-${API};google_apis;x86"; ARCH='x86'; fi
+            echo "no" | avdmanager create avd -n test -k "system-images;android-${API};google_apis;${ARCH}"
+            echo "Emulator's exit code is $?"
+    - save_cache:
+        key: android-img-test
+        paths:
+          #- ${ANDROID_HOME}/system-images
+          - /opt/android/sdk/system-images
     - run:
         name: Launch emulator
-        command: |
-            export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64;${ANDROID_HOME}/emulator/lib64/qt/lib
-            emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on
         background: true
+        command: |
+            ARCH=$(uname -m)
+            export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib
+            #ERROR: x86(_64) emulation currently requires hardware acceleration!
+            if [ "$ARCH" = "x86" ] || [ "$ARCH" = "x86_64" ]; then EMU="emulator64-x86 -accel off"; else EMU="emulator64-arm -accel on"; fi
+            echo "Use $EMU in $ARCH environment"
+            $EMU -avd test -noaudio -no-boot-anim -no-window
     - run:
         name: Wait emulator start
         command: |
@@ -134,7 +152,6 @@ jobs:
     <<: *config_test_api
     environment:
       API: 23
-      IMG_ARCH: armeabi-v7a
     docker:
       - image: circleci/android:api-23-alpha
 
@@ -142,7 +159,6 @@ jobs:
     <<: *config_test_api
     environment:
       API: 24
-      IMG_ARCH: armeabi-v7a
     docker:
       - image: circleci/android:api-24-alpha
 
@@ -150,7 +166,7 @@ jobs:
     <<: *config_test_api
     environment:
       API: 25
-      IMG_ARCH: armeabi-v7a
+      #IMG_ARCH: armeabi-v7a
     docker:
       - image: circleci/android:api-25-alpha
 
@@ -158,7 +174,7 @@ jobs:
     <<: *config_test_api
     environment:
       API: 26
-      IMG_ARCH: x86_64
+      #IMG_ARCH: x86_64
     docker:
       - image: circleci/android:api-26-alpha
 
@@ -166,7 +182,7 @@ jobs:
     <<: *config_test_api
     environment:
       API: 27
-      IMG_ARCH: x86
+      #IMG_ARCH: x86
     docker:
       - image: circleci/android:api-27-alpha
 
