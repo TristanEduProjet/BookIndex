@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.android.support.BypassRestricted;
+
 import fr.esgi.bookindex.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         if (menu instanceof MenuBuilder)
-            ((MenuBuilder) menu).setOptionalIconsVisible(true);
+            BypassRestricted.menuSetOptionalIconsVisible((MenuBuilder) menu, true);
         this.getMenuInflater().inflate(R.menu.main_actionbar_menu, menu); // Inflate the menu; this adds items to the action bar if it is present.
         return true;
     }
