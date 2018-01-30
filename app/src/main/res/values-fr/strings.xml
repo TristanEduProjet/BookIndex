@@ -10,4 +10,8 @@
     <string name="nav_search">Rechercher</string>
     <string name="action_send">Envoyer</string>
     <string name="action_share">Partager</string>
+    <string name="nav_import_export">Import/Export</string>
+    <string name="action_export">Export</string>
+    <string name="navigation_drawer_open">Ouvrir le menu</string>
+    <string name="navigation_drawer_close">Fermer le menu</string>
 </resources>
