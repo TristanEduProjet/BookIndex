@@ -14,6 +14,8 @@ import android.view.MenuItem;
 
 import com.android.support.BypassRestricted;
 
+import org.threeten.bp.Instant;
+
 import java.io.IOException;
 
 import fr.esgi.bookindex.R;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ((NavigationView) findViewById(R.id.nav_view)).setNavigationItemSelectedListener(this);
 
         this.testRetroLambda();
+        Log.d("MainActivity", "It's " + Instant.now());
     }
 
     @Override
