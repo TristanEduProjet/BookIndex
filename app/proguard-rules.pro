@@ -27,3 +27,7 @@
 # retrolambda rules
 -dontwarn java.lang.invoke.*
 -dontwarn **$$Lambda$*
+
+# streamsupport rules
+-keep class java8.** { *; }
+-dontwarn java8.**

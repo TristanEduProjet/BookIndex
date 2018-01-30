@@ -31,6 +31,7 @@ android {
 
 ext {
     supportLibraryVersion = '25.3+'
+    streamsupportVersion = '1.6.1'
 }
 
 dependencies {
@@ -42,5 +43,10 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportLibraryVersion"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile "com.android.support:design:$supportLibraryVersion"
+    compile group: 'net.sourceforge.streamsupport', name: 'streamsupport', version: "$streamsupportVersion"
+    //compile group: 'net.sourceforge.streamsupport', name: 'streamsupport-cfuture', version: "$streamsupportVersion"
+    //compile group: 'net.sourceforge.streamsupport', name: 'streamsupport-flow', version: "$streamsupportVersion"
+    //compile group: 'net.sourceforge.streamsupport', name: 'streamsupport-atomic', version: "$streamsupportVersion"
+    //compile group: 'net.sourceforge.streamsupport', name: 'streamsupport-literal', version: "$streamsupportVersion"
     testCompile 'junit:junit:4.12'
 }
