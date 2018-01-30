@@ -48,5 +48,6 @@ dependencies {
     //compile group: 'net.sourceforge.streamsupport', name: 'streamsupport-flow', version: "$streamsupportVersion"
     //compile group: 'net.sourceforge.streamsupport', name: 'streamsupport-atomic', version: "$streamsupportVersion"
     //compile group: 'net.sourceforge.streamsupport', name: 'streamsupport-literal', version: "$streamsupportVersion"
+    //compile 'com.annimon:stream:1.1.9'
     testCompile 'junit:junit:4.12'
 }
