@@ -8,10 +8,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.android.support.BypassRestricted;
+
+import java.io.IOException;
 
 import fr.esgi.bookindex.R;
 
@@ -39,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         ((NavigationView) findViewById(R.id.nav_view)).setNavigationItemSelectedListener(this);
+
+        this.testRetroLambda();
     }
 
     @Override
@@ -99,5 +104,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void testRetroLambda() {
+        final int x = 42;
+        this.runOnUiThread(() -> Log.d(this.getClass().getSimpleName(),  "from lambda : x="+x));
+        try {
+            if(this.getLocalClassName().startsWith("Main"))
+                throw new IOException();
+            else
+                throw new InterruptedException();
+        } catch (InterruptedException | IOException e) {
+            Log.e(this.getClass().getSimpleName(), "Exception multi-catch : ", e);
+        }
     }
 }
