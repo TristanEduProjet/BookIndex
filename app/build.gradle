@@ -39,5 +39,6 @@ dependencies {
     compile "com.android.support:design:$supportLibraryVersion"
     compile "com.google.android.gms:play-services-vision:$playServiceVersion"
     compile "com.google.android.gms:play-services-drive:$playServiceVersion"
+    compile "com.google.android.gms:play-services-auth:$playServiceVersion"
     testCompile 'junit:junit:4.12'
 }

@@ -1,5 +1,6 @@
 package fr.esgi.bookindex.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 
 import com.android.support.BypassRestricted;
 
+import fr.esgi.bookindex.GDrive_export;
 import fr.esgi.bookindex.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -69,8 +71,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             case R.id.action_save:
                 return true;
-            case R.id.action_export:
+            case R.id.action_export:{
+                Intent myIntent = new Intent(MainActivity.this, GDrive_export.class);
+                MainActivity.this.startActivity(myIntent);
                 return true;
+            }
             case R.id.action_send:
                 return true;
             case R.id.action_share:
