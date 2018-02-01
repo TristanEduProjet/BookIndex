@@ -7,10 +7,40 @@
     tools:context="fr.esgi.bookindex.GDrive_export">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/envoi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="EXPORT"
-        tools:layout_editor_absoluteX="101dp"
-        tools:layout_editor_absoluteY="277dp" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="200dp"
+        android:text="ENVOYER SUR GOOGLE DRIVE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exporter sur Google Drive"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/retour"
+        android:layout_width="309dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="RETOUR"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/envoi"
+        app:layout_constraintVertical_bias="0.874" />
 </android.support.constraint.ConstraintLayout>

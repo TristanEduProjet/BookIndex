@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.MainActivity">
-    <item
-        android:id="@+id/action_settings"
-        android:icon="@android:drawable/ic_menu_preferences"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        android:enabled="false"
-        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_share"
@@ -24,20 +17,15 @@
         app:showAsAction="never" >
         <menu>
             <item
-                android:id="@+id/action_save"
-                android:icon="@android:drawable/ic_menu_save"
-                android:enabled="false"
-                android:title="@string/action_save" />
-            <item
                 android:id="@+id/action_export"
                 android:icon="@android:drawable/ic_menu_set_as"
                 android:enabled="true"
                 android:title="@string/action_export" />
             <item
-                android:id="@+id/action_send"
-                android:icon="@android:drawable/ic_menu_send"
+                android:id="@+id/action_import"
                 android:enabled="false"
-                android:title="@string/action_send" />
+                android:icon="@android:drawable/ic_menu_upload"
+                android:title="@string/action_import" />
         </menu>
     </item>
 </menu>

@@ -1,5 +1,6 @@
 package fr.esgi.bookindex;
 
+import android.content.Context;
 import android.content.IntentSender;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,10 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -48,17 +53,35 @@ public class GDrive_export extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gdrive_export);
+        Button mClickButton1 = (Button) findViewById(R.id.envoi);
+        mClickButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+        });
+        Button mClickButton2 = (Button) findViewById(R.id.retour);
+        mClickButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         signIn();
     }
 
-    /** Start sign in activity. */
+    /**
+     * Start sign in activity.
+     */
     private void signIn() {
         Log.i(TAG, "OUVERTURE CONNEXON GOOGLE");
         mGoogleSignInClient = buildGoogleSignInClient();
         startActivityForResult(mGoogleSignInClient.getSignInIntent(), REQUEST_CODE_SIGN_IN);
     }
 
-    /** Build a Google SignIn client. */
+    /**
+     * Build a Google SignIn client.
+     */
     private GoogleSignInClient buildGoogleSignInClient() {
         GoogleSignInOptions signInOptions =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -67,7 +90,9 @@ public class GDrive_export extends AppCompatActivity {
         return GoogleSignIn.getClient(this, signInOptions);
     }
 
-    /** Create a new file and save it to Drive. */
+    /**
+     * Create a new file and save it to Drive.
+     */
     private void saveFileToDrive() {
         // Start by creating a new contents, and setting a callback.
         Log.i(TAG, "Creating new contents.");
@@ -139,10 +164,10 @@ public class GDrive_export extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_CODE_SIGN_IN:
-                Log.i(TAG, "REQUEST CODE DE CONNEXION");
-                // Called after user is signed in. <-------------------------------------------------- PROBLEME ICI
+                //Log.i(TAG, "REQUEST CODE DE CONNEXION");
+                // Called after user is signed in.
                 if (resultCode == RESULT_OK) {
-                    Log.i(TAG, "CONNEXION AVEC SUCCES");
+                    Toast.makeText(GDrive_export.this, "CONNEXION AU COMPTE GOOGLE AVEC SUCCES.", Toast.LENGTH_LONG).show();
                     // Use the last signed in account here since it already have a Drive scope.
                     mDriveClient = Drive.getDriveClient(this, GoogleSignIn.getLastSignedInAccount(this));
                     // Build a drive resource client.
@@ -151,7 +176,9 @@ public class GDrive_export extends AppCompatActivity {
                     // Start camera.
                     startActivityForResult(
                             new Intent(MediaStore.ACTION_IMAGE_CAPTURE), REQUEST_CODE_CAPTURE_IMAGE);
-                } else {  Log.i(TAG, "ERREUR SIGN IN res:"+resultCode+" req:"+requestCode+" data:"+data); }
+                } else {
+                    Toast.makeText(GDrive_export.this, "IMPOSSIBLE DE SE CONNECTER AU COMPTE GOOGLE.\nVERIFIEZ LA CONNEXION INTERNET.", Toast.LENGTH_LONG).show();
+                }
                 break;
             case REQUEST_CODE_CAPTURE_IMAGE:
                 Log.i(TAG, "capture image request code");
