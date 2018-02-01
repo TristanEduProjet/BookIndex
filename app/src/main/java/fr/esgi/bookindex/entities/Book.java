@@ -2,18 +2,21 @@ package fr.esgi.bookindex.entities;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
 
-@Entity(tableName = "books")
+@Entity(tableName = "books", foreignKeys = @ForeignKey(entity = Author.class,
+                                                        parentColumns = "id",
+                                                        childColumns = "authorId"))
 public class Book {
 
     @PrimaryKey
     private int id;
 
-    private String name;
+    private String title;
 
-    private String author;
+    private int authorId;
 
     private String description;
 
@@ -27,20 +30,20 @@ public class Book {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.title = title;
     }
 
-    public String getAuthor() {
-        return author;
+    public int getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
     }
 
     public String getDescription() {
