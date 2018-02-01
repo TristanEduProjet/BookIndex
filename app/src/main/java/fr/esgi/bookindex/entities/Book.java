@@ -11,13 +11,10 @@ public class Book {
     @PrimaryKey
     private int id;
 
-    @ColumnInfo
     private String name;
 
-    @ColumnInfo
     private String author;
 
-    @ColumnInfo
     private String description;
 
 
