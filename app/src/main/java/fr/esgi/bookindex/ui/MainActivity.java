@@ -1,5 +1,6 @@
 package fr.esgi.bookindex.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,7 +19,9 @@ import org.threeten.bp.Instant;
 
 import java.io.IOException;
 
+import fr.esgi.bookindex.GDrive_export;
 import fr.esgi.bookindex.R;
+import fr.esgi.bookindex.about;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -73,15 +76,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch(item.getItemId()) {
-            case R.id.action_settings:
-                return true;
-            case R.id.action_save:
-                return true;
-            case R.id.action_export:
-                return true;
-            case R.id.action_send:
-                return true;
             case R.id.action_share:
+                return true;
+            case R.id.action_export:{
+                Intent myIntent = new Intent(MainActivity.this, GDrive_export.class);
+                MainActivity.this.startActivity(myIntent);
+                return true;
+            }
+            case R.id.action_import:
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -98,8 +100,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_settings:
                 break;
-
             case R.id.nav_about:
+                Intent myIntent = new Intent(MainActivity.this, about.class);
+                MainActivity.this.startActivity(myIntent);
                 break;
             case R.id.nav_help:
                 break;
