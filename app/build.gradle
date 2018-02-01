@@ -54,7 +54,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile "com.android.support:design:$supportLibraryVersion"
 
-    compile group: 'net.sourceforge.streamsupport', name: 'android-retrostreams', version: "$streamsupportVersion"
+    annotationProcessor group: 'net.sourceforge.streamsupport', name: 'android-retrostreams', version: "$streamsupportVersion"
     //compile group: 'net.sourceforge.streamsupport', name: 'android-retrofuture', version: "$streamsupportVersion"
     //compile group: 'net.sourceforge.streamsupport', name: 'android-retroflow', version: "$streamsupportVersion"
     //compile group: 'net.sourceforge.streamsupport', name: 'android-retroatomic', version: "$streamsupportVersion"

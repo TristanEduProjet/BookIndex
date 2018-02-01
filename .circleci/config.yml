@@ -39,6 +39,7 @@ config_test_api: &config_test_api
             uname -a
             uname -m
             lsb_release -a
+            java -version
             emulator -version
     - run:
         name: Setup emulator
@@ -87,7 +88,7 @@ jobs:
   build_and_check:
     <<: *defaults
     docker:
-      - image: circleci/android:api-25-alpha
+      - image: circleci/android:api-27-alpha
     #branche:
     #  ignore:
     #    - /feature/*
@@ -95,6 +96,15 @@ jobs:
       - run:
           name: Correction android environment
           command: sdkmanager "build-tools;27.0.2"
+      - run:
+          name: debug env
+          command: |
+              pwd
+              uname -a
+              uname -m
+              lsb_release -a
+              java -version
+              emulator -version
       - checkout
       - restore_cache:
           <<: *config_cache_restore
