@@ -1,10 +1,12 @@
 package fr.esgi.bookindex.entities;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 
-@Entity(tableName = "authors")
+@Entity(tableName = "authors",
+        indices = {@Index("firstName"), @Index("lastName")})
 public class Author {
 
     @PrimaryKey
@@ -13,6 +15,7 @@ public class Author {
     private String firstName;
 
     private String lastName;
+
 
     public int getId() {
         return id;

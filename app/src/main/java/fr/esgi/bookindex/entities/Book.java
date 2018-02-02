@@ -3,12 +3,15 @@ package fr.esgi.bookindex.entities;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 
-@Entity(tableName = "books", foreignKeys = @ForeignKey(entity = Author.class,
-                                                        parentColumns = "id",
-                                                        childColumns = "authorId"))
+@Entity(tableName = "books",
+        indices = {@Index("id"), @Index("authorId")},
+        foreignKeys = @ForeignKey(entity = Author.class,
+                                  parentColumns = "id",
+                                  childColumns = "authorId"))
 public class Book {
 
     @PrimaryKey
@@ -34,7 +37,7 @@ public class Book {
         return title;
     }
 
-    public void setName(String name) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
