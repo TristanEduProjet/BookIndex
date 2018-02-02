@@ -37,7 +37,8 @@ animalsniffer {
 }
 
 ext {
-    supportLibraryVersion = '25.3+'
+    supportLibraryVersion = '25.3.1'
+    playServiceVersion = '11.8.0'
     streamsupportVersion = '1.6.1'
 }
 
@@ -53,7 +54,9 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportLibraryVersion"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile "com.android.support:design:$supportLibraryVersion"
-
+    compile "com.google.android.gms:play-services-vision:$playServiceVersion"
+    compile "com.google.android.gms:play-services-drive:$playServiceVersion"
+    compile "com.google.android.gms:play-services-auth:$playServiceVersion"
     annotationProcessor group: 'net.sourceforge.streamsupport', name: 'android-retrostreams', version: "$streamsupportVersion"
     //compile group: 'net.sourceforge.streamsupport', name: 'android-retrofuture', version: "$streamsupportVersion"
     //compile group: 'net.sourceforge.streamsupport', name: 'android-retroflow', version: "$streamsupportVersion"
