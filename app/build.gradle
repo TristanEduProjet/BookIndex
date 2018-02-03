@@ -61,6 +61,7 @@ dependencies {
     compile "com.google.android.gms:play-services-vision:$playServiceVersion"
     compile "com.google.android.gms:play-services-drive:$playServiceVersion"
     compile "com.google.android.gms:play-services-auth:$playServiceVersion"
+    provided group: 'net.sourceforge.streamsupport', name: 'android-retrostreams', version: "$streamsupportVersion"
     annotationProcessor group: 'net.sourceforge.streamsupport', name: 'android-retrostreams', version: "$streamsupportVersion"
     //compile group: 'net.sourceforge.streamsupport', name: 'android-retrofuture', version: "$streamsupportVersion"
     //compile group: 'net.sourceforge.streamsupport', name: 'android-retroflow', version: "$streamsupportVersion"

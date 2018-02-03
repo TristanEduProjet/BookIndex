@@ -1,25 +1,23 @@
 package fr.esgi.bookindex;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
-import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+
+import java9.util.stream.Collectors;
+import java9.util.stream.IntStream;
 
 public class ScanActivity extends AppCompatActivity {
     final static public int REQ_SCAN = 1;
@@ -40,8 +38,8 @@ public class ScanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
 
-        this.cameraView = (SurfaceView) this.findViewById(R.id.surfaceView);
-        this.cameraScanRes = (TextView) this.findViewById(R.id.surfaceText);
+        this.cameraView = this.findViewById(R.id.surfaceView);
+        this.cameraScanRes = this.findViewById(R.id.surfaceText);
 
         final BarcodeDetector detector = this.barcodeDetector = new BarcodeDetector.Builder(this.getApplicationContext())
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
@@ -61,15 +59,15 @@ public class ScanActivity extends AppCompatActivity {
                 public void surfaceCreated(final SurfaceHolder holder) {
                     try {
                         cameraSource.start(cameraView.getHolder()); //noinspection MissingPermission
-                    } catch (IOException ex) {
+                    } catch(final IOException ex) {
                         Log.e("CameraSource", "problem with holder", ex);
                     }
                 }
                 @Override
-                public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                public void surfaceChanged(final SurfaceHolder holder, final int format, final int width, final int height) {
                 }
                 @Override
-                public void surfaceDestroyed(SurfaceHolder holder) {
+                public void surfaceDestroyed(final SurfaceHolder holder) {
                     cameraSource.stop();
                 }
             });
@@ -82,27 +80,16 @@ public class ScanActivity extends AppCompatActivity {
                 public void receiveDetections(final Detector.Detections<Barcode> detections) {
                     final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                     if (barcodes.size() != 0) {
-                        ScanActivity.this.cameraScanRes.post(new Runnable() {
-                            @Override
-                            public void run() { // → &#x2192;  ✓ \u2713  ✔ \u2714  ✘ \u2718  ✗ \u2717  ► \u25ba  ▷ \u25b7
-                                final StringBuilder builder = new StringBuilder();
-                                int i;
-                                for(i=0 ; i < barcodes.size() ; i++) {
-                                    final Barcode barcode = barcodes.valueAt(i);
-                                    builder.append(barcode.valueFormat == Barcode.ISBN ? '\u25ba' : '\u25b7').append(' ')
-                                            .append(barcode.displayValue).append('\n');
-                                }
-                                ScanActivity.this.cameraScanRes.setText(builder.deleteCharAt(builder.length()-1).toString());
-                            }
-                        });
-                        int i;
-                        for(i=0 ; i < barcodes.size() ; i++) {
-                            final Barcode barcode = barcodes.valueAt(i);
-                            if(barcode.valueFormat == Barcode.ISBN) {
-                                ScanActivity.this.setResult(ScanActivity.RES_OK,  new Intent().putExtra(FIELD_BCODE, barcode.rawValue));
-                                ScanActivity.this.finish();
-                            }
-                        }
+                        ScanActivity.this.cameraScanRes.post(() -> ScanActivity.this.cameraScanRes.setText( // ✓ \u2713  ✔ \u2714  ✘ \u2718  ✗ \u2717  ► \u25ba  ▷ \u25b7
+                                    IntStream.range(0, barcodes.size()).mapToObj(barcodes::valueAt)
+                                    .map(bc -> (bc.valueFormat == Barcode.ISBN ? '\u25ba' : '\u25b7')+' '+bc.displayValue)
+                                    .collect(Collectors.joining("\n")))
+                        );
+                        IntStream.range(0, barcodes.size()).mapToObj(barcodes::valueAt).filter(bc -> bc.valueFormat == Barcode.ISBN).findFirst()
+                                .ifPresent(bc -> {
+                                    ScanActivity.this.setResult(ScanActivity.RES_OK,  new Intent().putExtra(FIELD_BCODE, bc.rawValue));
+                                    ScanActivity.this.finish();
+                                });
                     }
                 }
             });
