@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".GDrive_export" />
-        <activity android:name=".about"></activity>
+        <activity android:name=".About"></activity>
     </application>
 
 </manifest>
