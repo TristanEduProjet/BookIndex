@@ -1,13 +1,24 @@
 package fr.esgi.bookindex;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.hardware.Camera;
+import android.hardware.Camera.Parameters;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.Menu;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -15,9 +26,11 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 import java9.util.stream.Collectors;
 import java9.util.stream.IntStream;
+
 
 public class ScanActivity extends AppCompatActivity {
     final static public int REQ_SCAN = 1;
@@ -32,11 +45,12 @@ public class ScanActivity extends AppCompatActivity {
     private TextView cameraScanRes;
     private CameraSource cameraSource;
     private BarcodeDetector barcodeDetector;
+    private Camera camera;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scan);
+        this.setContentView(R.layout.activity_scan);
 
         this.cameraView = this.findViewById(R.id.surfaceView);
         this.cameraScanRes = this.findViewById(R.id.surfaceText);
@@ -53,6 +67,7 @@ public class ScanActivity extends AppCompatActivity {
                     .setRequestedPreviewSize(1600, 1024)
                     .setAutoFocusEnabled(true) //you should add this feature
                     .build();
+            this.camera = getCamera(cameraSource);
 
             cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
                 @Override
@@ -97,6 +112,22 @@ public class ScanActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        this.getMenuInflater().inflate(R.menu.scanner_menu, menu);
+        final Switch _switch = menu.findItem(R.id.app_bar_switch).getActionView().findViewById(R.id.cameraFlash);
+        if(this.camera!=null && this.getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH))
+            _switch.setOnCheckedChangeListener((btnView, isChecked) -> {
+                Parameters parameters = this.camera.getParameters();
+                parameters.setFlashMode(isChecked ? Parameters.FLASH_MODE_TORCH : Parameters.FLASH_MODE_OFF);
+                this.camera.setParameters(parameters);
+            }
+            /*Toast.makeText(getApplication(), isChecked ? "ON" : "OFF", Toast.LENGTH_SHORT).show()*/);
+        else
+            _switch.setEnabled(false);
+        return true; //super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public void onBackPressed() {
         this.setResult(RES_CANCEL);
         super.onBackPressed();
@@ -109,5 +140,25 @@ public class ScanActivity extends AppCompatActivity {
         if(this.barcodeDetector != null)
             this.barcodeDetector.release();
         super.onDestroy();
+    }
+
+    @Nullable
+    private static Camera getCamera(@NonNull CameraSource cameraSource) {
+        for(final Field field : CameraSource.class.getDeclaredFields()) {
+            if(field.getType() == Camera.class) {
+                field.setAccessible(true);
+                try {
+                    final Camera camera = (Camera) field.get(cameraSource);
+                    if (camera != null)
+                        return camera;
+                    else
+                        return null;
+                } catch(final IllegalAccessException e) {
+                    Log.e("ScanActivity", "getCamera", e);
+                }
+                break;
+            }
+        }
+        return null;
     }
 }

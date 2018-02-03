@@ -3,6 +3,12 @@
     package="fr.esgi.bookindex">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <permission android:name="android.permission.FLASHLIGHT"
+        android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
+        android:protectionLevel="normal"
+        android:label="@string/permlab_flashlight"
+        android:description="@string/permdesc_flashlight" />
 
     <application
         android:allowBackup="true"
