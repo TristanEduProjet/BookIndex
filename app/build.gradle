@@ -3,8 +3,8 @@ apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'ru.vyarus.animalsniffer'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "27.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "fr.esgi.bookindex"
         minSdkVersion 16
@@ -37,7 +37,7 @@ animalsniffer {
 }
 
 ext {
-    supportLibraryVersion = '25.3.1'
+    supportLibraryVersion = '26.1.0'
     playServiceVersion = '11.8.0'
     streamsupportVersion = '1.6.1'
 }
@@ -64,6 +64,11 @@ dependencies {
     //compile group: 'net.sourceforge.streamsupport', name: 'streamsupport-literal', version: "$streamsupportVersion"
     //compile 'com.annimon:stream:1.1.9'
     compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
+
+    // Room
+    compile "android.arch.persistence.room:runtime:1.0.0"
+    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+
     //compile 'org.threeten:threeten-extra:1.3.2'
 
     testCompile 'junit:junit:4.12'
