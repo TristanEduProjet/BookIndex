@@ -17,7 +17,15 @@ import android.widget.Toast;
 
 import java.util.Arrays;
 
+import com.android.support.BypassRestricted;
+
+import org.threeten.bp.Instant;
+
+import java.io.IOException;
+
+import fr.esgi.bookindex.GDrive_export;
 import fr.esgi.bookindex.R;
+import fr.esgi.bookindex.About;
 import fr.esgi.bookindex.ScanActivity;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -44,6 +52,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         ((NavigationView) findViewById(R.id.nav_view)).setNavigationItemSelectedListener(this);
+
+        this.testRetroLambda();
+        Log.d("MainActivity", "It's " + Instant.now());
     }
 
     public void launchScan(final View v) {
@@ -86,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         if (menu instanceof MenuBuilder)
-            ;//((MenuBuilder) menu).setOptionalIconsVisible(true);
+            BypassRestricted.menuSetOptionalIconsVisible((MenuBuilder) menu, true);
         this.getMenuInflater().inflate(R.menu.main_actionbar_menu, menu); // Inflate the menu; this adds items to the action bar if it is present.
         return true;
     }
@@ -97,15 +108,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch(item.getItemId()) {
-            case R.id.action_settings:
-                return true;
-            case R.id.action_save:
-                return true;
-            case R.id.action_export:
-                return true;
-            case R.id.action_send:
-                return true;
             case R.id.action_share:
+                return true;
+            case R.id.action_export:{
+                Intent myIntent = new Intent(MainActivity.this, GDrive_export.class);
+                MainActivity.this.startActivity(myIntent);
+                return true;
+            }
+            case R.id.action_import:
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -122,8 +132,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_settings:
                 break;
-
             case R.id.nav_about:
+                Intent myIntent = new Intent(MainActivity.this, About.class);
+                MainActivity.this.startActivity(myIntent);
                 break;
             case R.id.nav_help:
                 break;
@@ -131,5 +142,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void testRetroLambda() {
+        final int x = 42;
+        this.runOnUiThread(() -> Log.d(this.getClass().getSimpleName(),  "from lambda : x="+x));
+        try {
+            if(this.getLocalClassName().startsWith("Main"))
+                throw new IOException();
+            else
+                throw new InterruptedException();
+        } catch (InterruptedException | IOException e) {
+            Log.e(this.getClass().getSimpleName(), "Exception multi-catch : ", e);
+        }
     }
 }
