@@ -19,6 +19,8 @@ allprojects {
         //google() // gradle pligun 4+
         maven { url "https://maven.google.com" }
         //mavenCentral()
+        //mavenLocal()
+        //maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
 }
 

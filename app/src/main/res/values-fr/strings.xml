@@ -15,4 +15,7 @@
     <string name="navigation_drawer_open">Ouvrir le menu</string>
     <string name="navigation_drawer_close">Fermer le menu</string>
     <string name="action_import">Import</string>
+    <string name="camera_flash">Flash</string>
+    <string name="permlab_flashlight">Contrôle Flash</string>
+    <string name="permdesc_flashlight">Contrôle du flash</string>
 </resources>
