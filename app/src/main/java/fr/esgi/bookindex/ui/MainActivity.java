@@ -21,7 +21,7 @@ import java.io.IOException;
 
 import fr.esgi.bookindex.GDrive_export;
 import fr.esgi.bookindex.R;
-import fr.esgi.bookindex.about;
+import fr.esgi.bookindex.About;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_settings:
                 break;
             case R.id.nav_about:
-                Intent myIntent = new Intent(MainActivity.this, about.class);
+                Intent myIntent = new Intent(MainActivity.this, About.class);
                 MainActivity.this.startActivity(myIntent);
                 break;
             case R.id.nav_help:
