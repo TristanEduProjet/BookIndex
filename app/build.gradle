@@ -43,6 +43,7 @@ ext {
     supportLibraryVersion = '26.1.0'
     playServiceVersion = '11.8.0'
     streamsupportVersion = '1.6.1'
+    androidannotationsVersion = '4.4.0'
 }
 
 dependencies {
@@ -58,9 +59,13 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile "com.android.support:design:$supportLibraryVersion"
     compile "com.android.support:support-annotations:$supportLibraryVersion"
+    annotationProcessor "org.androidannotations:androidannotations:$androidannotationsVersion"
+    compile "org.androidannotations:androidannotations-api:$androidannotationsVersion"
+
     compile "com.google.android.gms:play-services-vision:$playServiceVersion"
     compile "com.google.android.gms:play-services-drive:$playServiceVersion"
     compile "com.google.android.gms:play-services-auth:$playServiceVersion"
+
     provided group: 'net.sourceforge.streamsupport', name: 'android-retrostreams', version: "$streamsupportVersion"
     annotationProcessor group: 'net.sourceforge.streamsupport', name: 'android-retrostreams', version: "$streamsupportVersion"
     //compile group: 'net.sourceforge.streamsupport', name: 'android-retrofuture', version: "$streamsupportVersion"

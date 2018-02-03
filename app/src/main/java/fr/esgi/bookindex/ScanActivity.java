@@ -8,17 +8,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -41,7 +37,9 @@ public class ScanActivity extends AppCompatActivity {
     final static public String FIELD_BCODE = "BARECODE";
     final static public String FIELD_ERRDETAIL = "ERROR_DETAIL";
 
+    //@ViewById(R.id.surfaceView)
     private SurfaceView cameraView;
+    //@ViewById(R.id.surfaceText)
     private TextView cameraScanRes;
     private CameraSource cameraSource;
     private BarcodeDetector barcodeDetector;
