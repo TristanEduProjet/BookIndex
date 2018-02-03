@@ -3,8 +3,8 @@ apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'ru.vyarus.animalsniffer'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "27.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "fr.esgi.bookindex"
         minSdkVersion 16
@@ -37,7 +37,7 @@ animalsniffer {
 }
 
 ext {
-    supportLibraryVersion = '25.3.1'
+    supportLibraryVersion = '26.1.0'
     playServiceVersion = '11.8.0'
     streamsupportVersion = '1.6.1'
 }
