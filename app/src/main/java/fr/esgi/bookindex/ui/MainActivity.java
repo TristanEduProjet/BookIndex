@@ -9,9 +9,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
+import java.util.Arrays;
 
 import fr.esgi.bookindex.R;
 import fr.esgi.bookindex.ScanActivity;
@@ -43,7 +47,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void launchScan(final View v) {
-        this.startActivityForResult(new Intent(this, ScanActivity.class), 100);
+        this.startActivityForResult(new Intent(this, ScanActivity.class), ScanActivity.REQ_SCAN);
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case ScanActivity.REQ_SCAN:
+                switch(resultCode) {
+                    case ScanActivity.RES_ERRINIT:
+                        Toast.makeText(this, "Error while start scanner", Toast.LENGTH_SHORT).show();
+                        break;
+                    case ScanActivity.RES_ERR:
+                        Toast.makeText(this, "Error while scanning : " + data.getStringExtra(ScanActivity.FIELD_ERRDETAIL), Toast.LENGTH_SHORT).show();
+                        break;
+                    case ScanActivity.RES_OK:
+                        Toast.makeText(this, "Result scan : "+data.getStringExtra(ScanActivity.FIELD_BCODE), Toast.LENGTH_LONG).show();
+                        break;
+                }
+                break;
+            default:
+                Log.w("MainActivity", "Get unknow activity result : "
+                                                    + Arrays.toString(new Object[]{requestCode, resultCode, data}));
+        }
     }
 
     @Override
