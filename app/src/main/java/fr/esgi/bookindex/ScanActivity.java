@@ -7,12 +7,15 @@ import android.hardware.Camera.Parameters;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -49,6 +52,9 @@ public class ScanActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_scan);
+        try {
+            this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch(final NullPointerException e) { Log.e("ScanActivity", "error with parent activity", e); }
 
         this.cameraView = this.findViewById(R.id.surfaceView);
         this.cameraScanRes = this.findViewById(R.id.surfaceText);
@@ -121,8 +127,20 @@ public class ScanActivity extends AppCompatActivity {
             }
             /*Toast.makeText(getApplication(), isChecked ? "ON" : "OFF", Toast.LENGTH_SHORT).show()*/);
         else
-            _switch.setEnabled(false);
+            //_switch.setEnabled(false);
+            _switch.setVisibility(View.GONE);
         return true; //super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch(item.getItemId()) {
+            case android.R.id.home: // Respond to the action bar's Up/Home button
+                //NavUtils.navigateUpFromSameTask(this);
+                this.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
