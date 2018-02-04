@@ -19,11 +19,14 @@ import org.threeten.bp.Instant;
 
 import java.io.IOException;
 
+import fr.esgi.bookindex.BookFragment;
 import fr.esgi.bookindex.GDrive_export;
 import fr.esgi.bookindex.R;
 import fr.esgi.bookindex.About;
+import fr.esgi.bookindex.dummy.DummyContent;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+                                                               BookFragment.OnListFragmentInteractionListener {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -123,5 +126,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } catch (InterruptedException | IOException e) {
             Log.e(this.getClass().getSimpleName(), "Exception multi-catch : ", e);
         }
+    }
+
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+
     }
 }
