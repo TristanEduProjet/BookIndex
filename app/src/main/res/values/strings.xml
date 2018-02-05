@@ -21,4 +21,6 @@
     <string name="action_settings">Settings</string>
     <string name="action_send">Send</string>
     <string name="camera_flash">Flash</string>
+    <string name="perm_not_accepted">Request not accorded</string>
+    <string name="perm_requesting">Requesting permission</string>
 </resources>

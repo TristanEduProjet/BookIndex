@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.flash" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
     <permission android:name="android.permission.FLASHLIGHT"
         android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
         android:protectionLevel="normal"
@@ -31,8 +33,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".GDrive_export" />
-        <activity android:name=".About" />
-        <activity android:name=".ScanActivity" />
+        <activity android:name=".ui.AboutActivity" />
+        <activity android:name=".ui.ScanActivity" />
     </application>
 
 </manifest>

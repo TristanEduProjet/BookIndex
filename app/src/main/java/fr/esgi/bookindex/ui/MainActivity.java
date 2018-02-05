@@ -15,18 +15,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.Arrays;
-
 import com.android.support.BypassRestricted;
 
 import org.threeten.bp.Instant;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import fr.esgi.bookindex.GDrive_export;
 import fr.esgi.bookindex.R;
-import fr.esgi.bookindex.About;
-import fr.esgi.bookindex.ScanActivity;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -133,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_settings:
                 break;
             case R.id.nav_about:
-                Intent myIntent = new Intent(MainActivity.this, About.class);
+                Intent myIntent = new Intent(MainActivity.this, AboutActivity.class);
                 MainActivity.this.startActivity(myIntent);
                 break;
             case R.id.nav_help:

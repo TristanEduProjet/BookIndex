@@ -18,4 +18,6 @@
     <string name="camera_flash">Flash</string>
     <string name="permlab_flashlight">Contrôle Flash</string>
     <string name="permdesc_flashlight">Contrôle du flash</string>
+    <string name="perm_requesting">Demande de permission</string>
+    <string name="perm_not_accepted">Permission non accordée</string>
 </resources>

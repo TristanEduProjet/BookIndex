@@ -1,4 +1,4 @@
-package fr.esgi.bookindex;
+package fr.esgi.bookindex.ui;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,8 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -24,11 +26,12 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
+import fr.esgi.bookindex.R;
 import java9.util.stream.Collectors;
 import java9.util.stream.IntStream;
 
 
-public class ScanActivity extends AppCompatActivity {
+public class ScanActivityOld extends AppCompatActivity {
     final static public int REQ_SCAN = 1;
     final static public int RES_ERRINIT = -1;
     final static public int RES_CANCEL = 0;
@@ -49,8 +52,11 @@ public class ScanActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_scan);
+        try {
+            this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch(final NullPointerException e) { Log.e("ScanActivity", "error with parent activity", e); }
 
-        this.cameraView = this.findViewById(R.id.surfaceView);
+        //this.cameraView = this.findViewById(R.id.surfaceView);
         this.cameraScanRes = this.findViewById(R.id.surfaceText);
 
         final BarcodeDetector detector = this.barcodeDetector = new BarcodeDetector.Builder(this.getApplicationContext())
@@ -67,6 +73,8 @@ public class ScanActivity extends AppCompatActivity {
                     .build();
             this.camera = getCamera(cameraSource);
 
+            cameraView.getHolder().setKeepScreenOn(true);
+            cameraView.getHolder().setSizeFromLayout();
             cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
                 @Override
                 public void surfaceCreated(final SurfaceHolder holder) {
@@ -78,6 +86,7 @@ public class ScanActivity extends AppCompatActivity {
                 }
                 @Override
                 public void surfaceChanged(final SurfaceHolder holder, final int format, final int width, final int height) {
+                    //cameraView.
                 }
                 @Override
                 public void surfaceDestroyed(final SurfaceHolder holder) {
@@ -93,19 +102,24 @@ public class ScanActivity extends AppCompatActivity {
                 public void receiveDetections(final Detector.Detections<Barcode> detections) {
                     final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                     if (barcodes.size() != 0) {
-                        ScanActivity.this.cameraScanRes.post(() -> ScanActivity.this.cameraScanRes.setText( // ✓ \u2713  ✔ \u2714  ✘ \u2718  ✗ \u2717  ► \u25ba  ▷ \u25b7
+                        ScanActivityOld.this.cameraScanRes.post(() -> ScanActivityOld.this.cameraScanRes.setText( // ✓ \u2713  ✔ \u2714  ✘ \u2718  ✗ \u2717  ► \u25ba  ▷ \u25b7
                                     IntStream.range(0, barcodes.size()).mapToObj(barcodes::valueAt)
                                     .map(bc -> (bc.valueFormat == Barcode.ISBN ? '\u25ba' : '\u25b7')+' '+bc.displayValue)
                                     .collect(Collectors.joining("\n")))
                         );
                         IntStream.range(0, barcodes.size()).mapToObj(barcodes::valueAt).filter(bc -> bc.valueFormat == Barcode.ISBN).findFirst()
                                 .ifPresent(bc -> {
-                                    ScanActivity.this.setResult(ScanActivity.RES_OK,  new Intent().putExtra(FIELD_BCODE, bc.rawValue));
-                                    ScanActivity.this.finish();
+                                    ScanActivityOld.this.setResult(ScanActivityOld.RES_OK,  new Intent().putExtra(FIELD_BCODE, bc.rawValue));
+                                    ScanActivityOld.this.finish();
                                 });
                     }
                 }
             });
+
+            if(/*this.camera.getParameters().getSupportedFocusModes().contains() || */
+                    !this.getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_AUTOFOCUS)) {
+                Log.w("ScanActivity", "AutoFocus not supported !");
+            }
         }
     }
 
@@ -121,8 +135,20 @@ public class ScanActivity extends AppCompatActivity {
             }
             /*Toast.makeText(getApplication(), isChecked ? "ON" : "OFF", Toast.LENGTH_SHORT).show()*/);
         else
-            _switch.setEnabled(false);
+            //_switch.setEnabled(false);
+            _switch.setVisibility(View.GONE);
         return true; //super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch(item.getItemId()) {
+            case android.R.id.home: // Respond to the action bar's Up/Home button
+                //NavUtils.navigateUpFromSameTask(this);
+                this.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
