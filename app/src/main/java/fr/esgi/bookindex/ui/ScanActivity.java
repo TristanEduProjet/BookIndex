@@ -1,6 +1,5 @@
 package fr.esgi.bookindex.ui;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
@@ -13,7 +12,6 @@ import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -34,10 +32,8 @@ import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 
 import fr.esgi.bookindex.R;
-import fr.esgi.bookindex.utils.CameraUtils;
-import fr.esgi.bookindex.utils.PermissionUtils;
-import java9.util.stream.Collectors;
-import java9.util.stream.IntStream;
+//import java9.util.stream.Collectors;
+//import java9.util.stream.IntStream;
 
 public class ScanActivity extends AppCompatActivity {
     final static public int REQ_SCAN = 1;
@@ -50,11 +46,8 @@ public class ScanActivity extends AppCompatActivity {
     final static private int PERM_CAMERA = 50;
 
     private BarcodeDetector barcodeDetector;
-    private CameraSource cameraSource;
     private CameraView cameraView;
     private TextView cameraScanRes;
-    private ProgressBar requestCam;
-    private TextView requestCamText;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -76,36 +69,55 @@ public class ScanActivity extends AppCompatActivity {
         //this.cameraView.mapGesture(Gesture.TAP, GestureAction.FOCUS_WITH_MARKER);
         //this.cameraView.setOnClickListener(v -> { if(this.cameraView.isActivated()) this.cameraView.findFocus(); });
 
-        final BarcodeDetector detector = this.barcodeDetector = new BarcodeDetector.Builder(this.getApplicationContext())
-                .setBarcodeFormats(Barcode.ALL_FORMATS)
+        final BarcodeDetector detector = this.barcodeDetector = new BarcodeDetector.Builder(this).setBarcodeFormats(Barcode.ALL_FORMATS).build();
                 //.setBarcodeFormats(Barcode.EAN_8 | Barcode.EAN_13)
-                .build();
         if(!detector.isOperational()) {
             this.setResult(RES_ERRINIT); //Could not set up the detector!
             this.finish();
         } else {
-            (this.requestCam = this.findViewById(R.id.requestCam)).setVisibility(View.VISIBLE);
-            (this.requestCamText = this.findViewById(R.id.requestCamText)).setVisibility(View.VISIBLE);
             //CameraUtils.configureCamera(this);
-            /*this.cameraView.addFrameProcessor(f -> detector.detect(new Frame.Builder().setRotation(f.getRotation()).setTimestampMillis(f.getTime())
-                                         .setImageData(ByteBuffer.wrap(f.getData()), f.getSize().getWidth(), f.getSize().getWidth(), f.getFormat())
-                                         .build()));*/
-            this.cameraSource = new CameraSource.Builder(this, detector).setRequestedPreviewSize(1600, 1024).setAutoFocusEnabled(true).build();
+            this.cameraView.addFrameProcessor(f -> Log.d("ScanCameraView", "receive frame "+f.getTime()));
+            this.cameraView.addFrameProcessor(f -> { try {
+                detector.receiveFrame(new Frame.Builder().setRotation(f.getRotation()).setTimestampMillis(f.getTime())
+                        .setImageData(ByteBuffer.wrap(f.getData()), f.getSize().getWidth(), f.getSize().getWidth(), f.getFormat())
+                        .build());
+                } catch(final Exception e) { Log.e("ScanActivityDetector", "error arrived", e); } //TODO erreur lors exit activité
+            });
+            //this.cameraSource = new CameraSource.Builder(this, detector).setRequestedPreviewSize(1600, 1024).setAutoFocusEnabled(true).build();
             detector.setProcessor(new Detector.Processor<Barcode>() {
                 @Override
                 public void release() {
                 }
                 @Override
                 public void receiveDetections(final Detector.Detections<Barcode> detections) {
-                    Log.d("Detector", "receive detections "+detections.getFrameMetadata().getTimestampMillis());
                     final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                     if (barcodes.size() != 0) {
-                        ScanActivity.this.cameraScanRes.post(() -> ScanActivity.this.cameraScanRes.setText( // ✓ \u2713  ✔ \u2714  ✘ \u2718  ✗ \u2717  ► \u25ba  ▷ \u25b7
-                                barcodes.valueAt(0).displayValue)
-                                /*IntStream.range(0, barcodes.size()).mapToObj(barcodes::valueAt)
+                        ScanActivity.this.cameraScanRes.post(new Runnable() {
+                            @Override
+                            public void run() { // → &#x2192;  ✓ \u2713  ✔ \u2714  ✘ \u2718  ✗ \u2717  ► \u25ba  ▷ \u25b7
+                                final StringBuilder builder = new StringBuilder();
+                                int i;
+                                for(i=0 ; i < barcodes.size() ; i++) {
+                                    final Barcode barcode = barcodes.valueAt(i);
+                                    builder.append(barcode.valueFormat == Barcode.ISBN ? '\u25ba' : '\u25b7').append(' ')
+                                            .append(barcode.displayValue).append('\n');
+                                }
+                                ScanActivity.this.cameraScanRes.setText(builder.deleteCharAt(builder.length()-1).toString());
+                            }
+                        });
+                        /*ScanActivity.this.cameraScanRes.post(() -> ScanActivity.this.cameraScanRes.setText( // ✓ \u2713  ✔ \u2714  ✘ \u2718  ✗ \u2717  ► \u25ba  ▷ \u25b7
+                                IntStream.range(0, barcodes.size()).mapToObj(barcodes::valueAt)
                                         .map(bc -> (bc.valueFormat == Barcode.ISBN ? '\u25ba' : '\u25b7')+' '+bc.displayValue)
-                                        .collect(Collectors.joining("\n")))*/
-                        );
+                                        .collect(Collectors.joining("\n")))
+                        );*/
+                        int i;
+                        for(i=0 ; i < barcodes.size() ; i++) {
+                            final Barcode barcode = barcodes.valueAt(i);
+                            if(barcode.valueFormat == Barcode.ISBN) {
+                                ScanActivity.this.setResult(ScanActivity.RES_OK, new Intent().putExtra(FIELD_BCODE, barcode.rawValue));
+                                ScanActivity.this.finish();
+                            }
+                        }
                         /*IntStream.range(0, barcodes.size()).mapToObj(barcodes::valueAt).filter(bc -> bc.valueFormat == Barcode.ISBN).findFirst()
                                 .ifPresent(bc -> {
                                     ScanActivity.this.setResult(ScanActivityOld.RES_OK,  new Intent().putExtra(FIELD_BCODE, bc.rawValue));
@@ -114,47 +126,22 @@ public class ScanActivity extends AppCompatActivity {
                     }
                 }
             });
-            if(PermissionUtils.checkPermission(this, Manifest.permission.CAMERA, PERM_CAMERA))
-                this.initCam(true);
-        }
-    }
-
-    /**
-     * If has camera permissions ... or not
-     */
-    private void initCam(final boolean hasPerm) {
-        if(!hasPerm) {
-            this.requestCam.setVisibility(View.VISIBLE);
-            this.requestCam.setEnabled(false);
-            this.requestCamText.setVisibility(View.VISIBLE);
-            this.requestCamText.setText(R.string.perm_not_accepted);
-        } else {
-            this.requestCamText.setVisibility(View.GONE);
-            this.requestCam.setVisibility(View.GONE);
-            this.cameraView.start();
-            try {
-                this.cameraSource.start();
-            } catch(final IOException e) { Log.e("ScanActivity", "Error start cameraSource", e); }
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(CameraUtils.isGranted(this)) {
-            this.cameraView.start();
-            try {
-                this.cameraSource.start();
-            } catch(final IOException e) { Log.e("ScanActivity", "Error start cameraSource", e); }
-        } else
-            if(PermissionUtils.checkPermission(this, Manifest.permission.CAMERA, PERM_CAMERA))
-                this.initCam(true);
+        this.cameraView.start();
+        /*try {
+            this.cameraSource.start();
+        } catch(final IOException e) { Log.e("ScanActivity", "Error start cameraSource", e); }*/
     }
 
     @Override
     protected void onPause() {
         this.cameraView.stop();
-        this.cameraSource.stop();
+        //this.cameraSource.stop();
         super.onPause();
     }
 
@@ -162,7 +149,12 @@ public class ScanActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(final int requestCode, final @NonNull String[] permissions, final @NonNull int[] grantResults) {
         switch(requestCode) {
             case PERM_CAMERA:
-                this.initCam(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED);
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    this.cameraView.start();
+                    /*try {
+                        this.cameraSource.start();
+                    } catch(final IOException e) { Log.e("ScanActivity", "Error start cameraSource", e); }*/
+                }
                 break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -194,14 +186,13 @@ public class ScanActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        this.cameraView.stop();
         this.setResult(RES_CANCEL);
         super.onBackPressed();
     }
 
     @Override
     protected void onDestroy() {
-        if(this.cameraSource != null)
-            this.cameraSource.release();
         if(this.cameraView != null)
             this.cameraView.destroy();
         if(this.barcodeDetector != null)
