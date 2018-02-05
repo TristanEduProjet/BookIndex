@@ -3,14 +3,19 @@
     package="fr.esgi.bookindex">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.flash" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-    <permission android:name="android.permission.FLASHLIGHT"
-        android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
-        android:protectionLevel="normal"
+
+    <permission
+        android:name="android.permission.FLASHLIGHT"
+        android:description="@string/permdesc_flashlight"
         android:label="@string/permlab_flashlight"
-        android:description="@string/permdesc_flashlight" />
+        android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
+        android:protectionLevel="normal" />
 
     <application
         android:allowBackup="true"
@@ -22,6 +27,7 @@
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
+
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/title_activity_main"
@@ -35,6 +41,9 @@
         <activity android:name=".GDrive_export" />
         <activity android:name=".ui.AboutActivity" />
         <activity android:name=".ui.ScanActivity" />
+        <activity android:name=".ShowbookActivity" />
+        <activity android:name=".ImportActivity" />
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>

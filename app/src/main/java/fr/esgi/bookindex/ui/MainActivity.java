@@ -24,6 +24,8 @@ import java.util.Arrays;
 
 import fr.esgi.bookindex.GDrive_export;
 import fr.esgi.bookindex.R;
+import fr.esgi.bookindex.SettingsActivity;
+import fr.esgi.bookindex.ShowbookActivity;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             default:
                 Log.w("MainActivity", "Get unknow activity result : "
-                                                    + Arrays.toString(new Object[]{requestCode, resultCode, data}));
+                        + Arrays.toString(new Object[]{requestCode, resultCode, data}));
         }
     }
 
@@ -105,8 +107,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch(item.getItemId()) {
-            case R.id.action_share:
-                return true;
             case R.id.action_export:{
                 Intent myIntent = new Intent(MainActivity.this, GDrive_export.class);
                 MainActivity.this.startActivity(myIntent);
@@ -128,10 +128,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_bookloan:
                 break;
             case R.id.nav_settings:
+                Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                MainActivity.this.startActivity(myIntent);
                 break;
             case R.id.nav_about:
-                Intent myIntent = new Intent(MainActivity.this, AboutActivity.class);
-                MainActivity.this.startActivity(myIntent);
+                Intent myIntent2 = new Intent(MainActivity.this, AboutActivity.class);
+                MainActivity.this.startActivity(myIntent2);
                 break;
             case R.id.nav_help:
                 break;

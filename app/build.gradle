@@ -5,6 +5,17 @@ apply plugin: 'ru.vyarus.animalsniffer'
 android {
     compileSdkVersion 26
     buildToolsVersion "27.0.3"
+    useLibrary 'org.apache.http.legacy'
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+    }
     defaultConfig {
         applicationId "fr.esgi.bookindex"
         minSdkVersion 16
@@ -88,4 +99,10 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+    compile 'com.squareup.okhttp3:okhttp:3.3.1'
+    compile('org.apache.httpcomponents:httpmime:4.2.6') {
+        exclude module: 'httpclient'
+    }
+    compile 'org.apache.httpcomponents:httpclient:4.2.6'
 }
