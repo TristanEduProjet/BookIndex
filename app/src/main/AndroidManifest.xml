@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".GDrive_export" />
-        <activity android:name=".About" />
+        <activity android:name=".ui.AboutActivity" />
         <activity android:name=".ui.ScanActivity" />
     </application>
 
