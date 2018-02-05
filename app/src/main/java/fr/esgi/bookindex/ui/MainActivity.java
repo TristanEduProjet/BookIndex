@@ -80,12 +80,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     case ScanActivity.RES_OK:
                         Toast.makeText(this, "Result scan : "+data.getStringExtra(ScanActivity.FIELD_BCODE), Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(this, ShowbookActivity.class).putExtra("isbn", data.getStringExtra(ScanActivity.FIELD_BCODE)));
                         break;
                 }
                 break;
             default:
-                Log.w("MainActivity", "Get unknow activity result : "
-                                                    + Arrays.toString(new Object[]{requestCode, resultCode, data}));
+                Log.w("MainActivity", "Get unknow activity result : " + Arrays.toString(new Object[]{requestCode, resultCode, data}));
         }
     }
 

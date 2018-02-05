@@ -14,6 +14,11 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+    }
+    useLibrary 'org.apache.http.legacy'
     dataBinding {
         enabled = true
     }
@@ -102,6 +107,13 @@ dependencies {
     compile "android.arch.persistence.room:runtime:$archRoomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$archRoomVersion"
     //testCompile "android.arch.persistence.room:testing:$archRoomVersion" //Test helpers for Room
+
+    //http
+    compile 'com.squareup.okhttp3:okhttp:3.3.1'
+    compile('org.apache.httpcomponents:httpmime:4.2.6') {
+        exclude module: 'httpclient'
+    }
+    compile 'org.apache.httpcomponents:httpclient:4.2.6'
 
     testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
