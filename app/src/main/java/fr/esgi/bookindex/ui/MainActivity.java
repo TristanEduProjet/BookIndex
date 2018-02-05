@@ -1,5 +1,6 @@
 package fr.esgi.bookindex.ui;
 
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -19,11 +20,14 @@ import org.threeten.bp.Instant;
 
 import java.io.IOException;
 
+import fr.esgi.bookindex.AppDatabase;
 import fr.esgi.bookindex.BookFragment;
 import fr.esgi.bookindex.GDrive_export;
 import fr.esgi.bookindex.R;
 import fr.esgi.bookindex.About;
 import fr.esgi.bookindex.dummy.DummyContent;
+import fr.esgi.bookindex.entities.Author;
+import fr.esgi.bookindex.entities.Book;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
                                                                BookFragment.OnListFragmentInteractionListener {
@@ -53,6 +57,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         this.testRetroLambda();
         Log.d("MainActivity", "It's " + Instant.now());
+
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "book-database")
+                .allowMainThreadQueries()
+                .build();
+
+        Author VH = db.createAuthorInDB("Victor", "Hugo");
+        Author HB = db.createAuthorInDB("Henri", "Beyle");
+
+        db.createBookInDB("Les Misérables", VH, "Ceci est une description");
+        db.createBookInDB("Claude Gueux", VH, "Ceci est une description");
+        db.createBookInDB("Les Rouge et le Noir", HB, "Ceci est une description");
+
+
+
     }
 
     @Override
@@ -129,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(Book book) {
 
     }
 }

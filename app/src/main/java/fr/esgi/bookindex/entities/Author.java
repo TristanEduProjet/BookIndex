@@ -16,6 +16,12 @@ public class Author {
 
     private String lastName;
 
+    //Only authorized to AppDatabase, to create Author use AppDatabase.createAuthorInDB()
+    public Author(int id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
     public int getId() {
         return id;
@@ -39,5 +45,10 @@ public class Author {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+        return this.firstName + " " + this.lastName;
     }
 }

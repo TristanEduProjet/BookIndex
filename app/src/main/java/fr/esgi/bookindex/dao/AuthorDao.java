@@ -19,6 +19,9 @@ public interface AuthorDao {
     @Query("SELECT * FROM authors")
     public Author[] getAllAuthors();
 
+    @Query("SELECT COUNT(*) FROM authors")
+    public int countAllAuthors();
+
     @Query("SELECT * FROM authors WHERE id = :authorId")
     public Author getAuthorById(int authorId);
 
@@ -27,4 +30,5 @@ public interface AuthorDao {
 
     @Delete
     public void deleteAuthor(Author author);
+
 }

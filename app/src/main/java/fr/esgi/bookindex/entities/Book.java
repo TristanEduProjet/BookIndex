@@ -23,7 +23,13 @@ public class Book {
 
     private String description;
 
-
+    //Only authorized to AppDatabase, to create Book use AppDatabase.createBookInDB()
+    public Book(int id, String title, int authorId, String description) {
+        this.id = id;
+        this.title = title;
+        this.authorId = authorId;
+        this.description = description;
+    }
 
     public int getId() {
         return id;

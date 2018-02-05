@@ -19,6 +19,9 @@ public interface BookDao {
     @Query("SELECT * FROM books")
     public Book[] getAllBooks();
 
+    @Query("SELECT COUNT(*) FROM books")
+    public int countAllBooks();
+
     @Query("SELECT * FROM books WHERE id = :bookId")
     public Book getBookById(int bookId);
 
