@@ -20,4 +20,5 @@
     <string name="permdesc_flashlight">Contrôle du flash</string>
     <string name="perm_requesting">Demande de permission</string>
     <string name="perm_not_accepted">Permission non accordée</string>
+    <string name="menu_action_add">Ajouter/Scanner</string>
 </resources>
