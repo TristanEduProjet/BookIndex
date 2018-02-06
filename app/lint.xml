@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="RestrictedApi">
+        <ignore regexp="fr.esgi.bookindex.database.dao.*._Impl.*" />
+        <ignore regexp="fr.esgi/bookindex/AppDatabase_Impl.*" />
+    </issue>
+</lint>

@@ -1,2 +1,0 @@
-# BookIndex
-Gestionnaire de livres

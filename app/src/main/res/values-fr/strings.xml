@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_settings">Paramètres</string>
+    <string name="nav_settings">Paramètres</string>
+    <string name="nav_about">À propos</string>
+    <string name="nav_bookloan">Emprunts</string>
+    <string name="nav_help">Aide</string>
+    <string name="nav_other">Autre</string>
+    <string name="action_save">Sauvegarder</string>
+    <string name="nav_search">Rechercher</string>
+    <string name="action_send">Envoyer</string>
+    <string name="action_share">Partager</string>
+    <string name="nav_import_export">Import/Export</string>
+    <string name="action_export">Export</string>
+    <string name="navigation_drawer_open">Ouvrir le menu</string>
+    <string name="navigation_drawer_close">Fermer le menu</string>
+    <string name="action_import">Import</string>
+    <string name="camera_flash">Flash</string>
+    <string name="permlab_flashlight">Contrôle Flash</string>
+    <string name="permdesc_flashlight">Contrôle du flash</string>
+    <string name="perm_requesting">Demande de permission</string>
+    <string name="perm_not_accepted">Permission non accordée</string>
+</resources>

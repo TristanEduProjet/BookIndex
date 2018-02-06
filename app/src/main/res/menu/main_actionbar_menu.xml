@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.MainActivity">
+
+    <item
+        android:id="@+id/action_share"
+        android:icon="@android:drawable/ic_menu_set_as"
+        android:orderInCategory="90"
+        android:enabled="false"
+        android:title="@string/action_share" />
+    <item
+        android:title="@string/nav_import_export"
+        android:icon="@android:drawable/ic_menu_send"
+        android:orderInCategory="90"
+        app:showAsAction="never" >
+        <menu>
+            <item
+                android:id="@+id/action_export"
+                android:icon="@android:drawable/ic_menu_set_as"
+                android:enabled="true"
+                android:title="@string/action_export" />
+            <item
+                android:id="@+id/action_import"
+                android:enabled="false"
+                android:icon="@android:drawable/ic_menu_upload"
+                android:title="@string/action_import" />
+        </menu>
+    </item>
+</menu>
