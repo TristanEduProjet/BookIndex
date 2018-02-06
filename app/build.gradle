@@ -14,6 +14,9 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
+    dataBinding {
+        enabled = true
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -43,10 +46,14 @@ ext {
     supportLibraryVersion = '26.1.0'
     playServiceVersion = '11.8.0'
     streamsupportVersion = '1.6.1'
+    archRoomVersion = '1.0.0'
+    archComponentVersion = '1.1.0'
     androidannotationsVersion = '4.4.0'
 }
 
 dependencies {
+    compile 'com.android.support:support-v4:26.1.0'
+    compile 'com.android.support:recyclerview-v7:26.1.0'
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.5.3'
     signature 'org.codehaus.mojo.signature:java16:1.1@signature'
     signature 'net.sf.adnroidcents.signature:android-api-level-16:4.1.2_r5@signature'
@@ -56,11 +63,14 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     compile "com.android.support:appcompat-v7:$supportLibraryVersion"
+    compile "com.android.support:support-v4:$supportLibraryVersion"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile "com.android.support:design:$supportLibraryVersion"
+    compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
     compile "com.android.support:support-annotations:$supportLibraryVersion"
-    annotationProcessor "org.androidannotations:androidannotations:$androidannotationsVersion"
+
     compile "org.androidannotations:androidannotations-api:$androidannotationsVersion"
+    annotationProcessor "org.androidannotations:androidannotations:$androidannotationsVersion"
 
     compile "com.google.android.gms:play-services-vision:$playServiceVersion"
     compile "com.google.android.gms:play-services-drive:$playServiceVersion"
@@ -80,9 +90,18 @@ dependencies {
     compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
     //compile 'org.threeten:threeten-extra:1.3.2'
 
+    //Architecture component
+    compile "android.arch.lifecycle:extensions:$archComponentVersion"
+    //compile "android.arch.lifecycle:viewmodel:$archComponentVersion"
+    //compile "android.arch.lifecycle:livedata:$archComponentVersion"
+    testCompile "android.arch.core:core-testing:$archComponentVersion" //Test helpers for LiveData
+    annotationProcessor "android.arch.lifecycle:compiler:$archComponentVersion"
+    //compile "android.arch.lifecycle:common-java8:$archComponentVersion"
+
     // Room
-    compile "android.arch.persistence.room:runtime:1.0.0"
-    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+    compile "android.arch.persistence.room:runtime:$archRoomVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$archRoomVersion"
+    //testCompile "android.arch.persistence.room:testing:$archRoomVersion" //Test helpers for Room
 
     testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {

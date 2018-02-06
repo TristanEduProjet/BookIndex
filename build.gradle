@@ -22,6 +22,13 @@ allprojects {
         //mavenLocal()
         //maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
+
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xmaxerrs" << "4000"
+            options.compilerArgs << "-Xmaxwarns" << "4000"
+        }
+    }
 }
 
 task clean(type: Delete) {

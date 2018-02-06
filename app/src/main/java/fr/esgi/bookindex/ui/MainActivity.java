@@ -1,5 +1,6 @@
 package fr.esgi.bookindex.ui;
 
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -22,10 +23,14 @@ import org.threeten.bp.Instant;
 import java.io.IOException;
 import java.util.Arrays;
 
+import fr.esgi.bookindex.database.AppDatabase;
 import fr.esgi.bookindex.GDrive_export;
 import fr.esgi.bookindex.R;
+import fr.esgi.bookindex.database.DatabaseUtils;
+import fr.esgi.bookindex.database.entities.Book;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+                                                               BookFragment.OnListFragmentInteractionListener {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -52,6 +57,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         this.testRetroLambda();
         Log.d("MainActivity", "It's " + Instant.now());
+
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "book-database")
+                .allowMainThreadQueries()
+                .build();
+
+        DatabaseUtils.populateAsync(AppDatabase.getInstance(this));
     }
 
     public void launchScan(final View v) {
@@ -152,5 +164,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } catch (InterruptedException | IOException e) {
             Log.e(this.getClass().getSimpleName(), "Exception multi-catch : ", e);
         }
+    }
+
+    @Override
+    public void onListFragmentInteraction(Book book) {
+
     }
 }
