@@ -66,10 +66,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DatabaseUtils.populateAsync(AppDatabase.getInstance(this));
     }
 
-    public void launchScan(final View v) {
-        this.startActivityForResult(new Intent(this, ScanActivity.class), ScanActivity.REQ_SCAN);
-    }
-
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -95,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -117,13 +113,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch(item.getItemId()) {
+            case R.id.action_add:
+                this.startActivityForResult(new Intent(this, ScanActivity.class), ScanActivity.REQ_SCAN);
+                return true;
             case R.id.action_share:
                 return true;
-            case R.id.action_export:{
-                Intent myIntent = new Intent(MainActivity.this, GDrive_export.class);
-                MainActivity.this.startActivity(myIntent);
+            case R.id.action_export:
+                this.startActivity(new Intent(this, GDrive_export.class));
                 return true;
-            }
             case R.id.action_import:
                 return true;
             default:

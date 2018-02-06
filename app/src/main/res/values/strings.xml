@@ -23,4 +23,5 @@
     <string name="camera_flash">Flash</string>
     <string name="perm_not_accepted">Request not accorded</string>
     <string name="perm_requesting">Requesting permission</string>
+    <string name="menu_action_add">Add/Scan</string>
 </resources>
