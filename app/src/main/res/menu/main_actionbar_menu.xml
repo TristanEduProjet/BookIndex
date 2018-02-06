@@ -5,6 +5,12 @@
     tools:context=".ui.MainActivity">
 
     <item
+        android:id="@+id/action_add"
+        android:icon="@android:drawable/ic_menu_add"
+        android:orderInCategory="50"
+        android:title="@string/menu_action_add"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_share"
         android:icon="@android:drawable/ic_menu_set_as"
         android:orderInCategory="90"
