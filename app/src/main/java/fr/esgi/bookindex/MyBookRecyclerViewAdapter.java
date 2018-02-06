@@ -1,16 +1,16 @@
 package fr.esgi.bookindex;
 
-import android.arch.persistence.room.Room;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import fr.esgi.bookindex.BookFragment.OnListFragmentInteractionListener;
+import fr.esgi.bookindex.ui.BookFragment.OnListFragmentInteractionListener;
+import fr.esgi.bookindex.database.AppDatabase;
 import fr.esgi.bookindex.database.DatabaseUtils;
-import fr.esgi.bookindex.entities.Author;
-import fr.esgi.bookindex.entities.Book;
+import fr.esgi.bookindex.database.entities.Author;
+import fr.esgi.bookindex.database.entities.Book;
 
 import java.util.List;
 
@@ -28,8 +28,7 @@ public class MyBookRecyclerViewAdapter extends RecyclerView.Adapter<MyBookRecycl
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_book, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_book, parent, false);
         return new ViewHolder(view);
     }
 
@@ -42,9 +41,7 @@ public class MyBookRecyclerViewAdapter extends RecyclerView.Adapter<MyBookRecycl
             db = DatabaseUtils.initialize(holder.mView.getContext().getApplicationContext());
         }
 
-        new Thread(() -> {
-            author[0] = db.authorDao().getAuthorById(mValues.get(position).getAuthorId());;
-        }).start();
+        //new Thread(() -> author[0] = db.authorDao().getAuthorById(mValues.get(position).getAuthorId())).start();
 
         holder.mBook = mValues.get(position);
         holder.mTitleView.setText(mValues.get(position).getTitle());

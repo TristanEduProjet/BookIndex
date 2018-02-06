@@ -20,14 +20,12 @@ import org.threeten.bp.Instant;
 
 import java.io.IOException;
 
-import fr.esgi.bookindex.AppDatabase;
-import fr.esgi.bookindex.BookFragment;
+import fr.esgi.bookindex.database.AppDatabase;
 import fr.esgi.bookindex.GDrive_export;
 import fr.esgi.bookindex.R;
 import fr.esgi.bookindex.About;
-import fr.esgi.bookindex.dummy.DummyContent;
-import fr.esgi.bookindex.entities.Author;
-import fr.esgi.bookindex.entities.Book;
+import fr.esgi.bookindex.database.DatabaseUtils;
+import fr.esgi.bookindex.database.entities.Book;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
                                                                BookFragment.OnListFragmentInteractionListener {
@@ -63,15 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .allowMainThreadQueries()
                 .build();
 
-        Author VH = db.createAuthorInDB("Victor", "Hugo");
-        Author HB = db.createAuthorInDB("Henri", "Beyle");
-
-        db.createBookInDB("Les Misérables", VH, "Ceci est une description");
-        db.createBookInDB("Claude Gueux", VH, "Ceci est une description");
-        db.createBookInDB("Les Rouge et le Noir", HB, "Ceci est une description");
-
-
-
+        DatabaseUtils.populateAsync(AppDatabase.getInstance(this));
     }
 
     @Override
