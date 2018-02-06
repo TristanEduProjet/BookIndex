@@ -2,6 +2,6 @@
 <lint>
     <issue id="RestrictedApi">
         <ignore regexp="fr.esgi.bookindex.database.dao.*._Impl.*" />
-        <ignore regexp="fr.esgi/bookindex/AppDatabase_Impl.*" />
+        <ignore regexp="fr.esgi/bookindex/database/AppDatabase_Impl.*" />
     </issue>
 </lint>
