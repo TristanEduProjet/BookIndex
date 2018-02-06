@@ -35,6 +35,7 @@
         <activity android:name=".GDrive_export" />
         <activity android:name=".ui.AboutActivity" />
         <activity android:name=".ui.ScanActivity" />
+        <activity android:name=".ui.ShowbookActivity" />
     </application>
 
 </manifest>
