@@ -28,7 +28,7 @@ public class Book {
     public Book() {
     }
 
-    //@Ignore
+    @Ignore
     //Only authorized to AppDatabase, to create Book use AppDatabase.createBookInDB()
     public Book(Integer id, String title, Integer authorId, String description) {
         this(title, authorId, description);

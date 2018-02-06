@@ -1,11 +1,16 @@
 package fr.esgi.bookindex.database;
 
+import android.arch.lifecycle.LiveData;
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.List;
 
+import fr.esgi.bookindex.database.dao.AuthorDao;
+import fr.esgi.bookindex.database.entities.Author;
 import fr.esgi.bookindex.database.entities.Book;
 import fr.esgi.bookindex.databinding.FragmentBookBinding;
 
@@ -14,9 +19,11 @@ import fr.esgi.bookindex.databinding.FragmentBookBinding;
  */
 public class BookFragmentRecyclerViewAdapter extends RecyclerView.Adapter<BookFragmentRecyclerViewAdapter.BookFragmentRecyclerViewHolder> {
     private List<Book> books;
+    private AppDatabase instance;
 
-    public BookFragmentRecyclerViewAdapter(final List<Book> books) {
+    public BookFragmentRecyclerViewAdapter(final @NonNull AppDatabase instance, final List<Book> books) {
         this.books = books;
+        this.instance = instance;
     }
 
     @Override
@@ -27,7 +34,19 @@ public class BookFragmentRecyclerViewAdapter extends RecyclerView.Adapter<BookFr
 
     @Override
     public void onBindViewHolder(final BookFragmentRecyclerViewHolder holder, final int position) {
-        holder.bind(this.books.get(position).getTitle());
+        final Book book = this.books.get(position);
+        try {
+            final Integer aid = book.getAuthorId();
+            final AuthorDao dao = this.instance.authorDao();
+            final LiveData<List<Author>> result = dao.getAuthorById(aid);
+            final List<Author> sub = result.getValue();
+            try {
+                final Author author = sub.get(0);
+                holder.bind(book.getTitle(), author.getLastName(), author.getFirstName());
+            } catch(final NullPointerException n) { throw new IndexOutOfBoundsException("No author found"); }
+        } catch(final IndexOutOfBoundsException e) {
+            holder.bind(book.getTitle(), null);
+        }
     }
 
     @Override
@@ -48,8 +67,13 @@ public class BookFragmentRecyclerViewAdapter extends RecyclerView.Adapter<BookFr
             this.binding = binding;
         }
 
-        void bind(final String bookTitle) {
+        void bind(final String bookTitle, final String authorName, final String authorFirstName) {
+            this.bind(bookTitle, authorFirstName+" "+authorName);
+        }
+
+        void bind(final String bookTitle, final String authorFullName) {
             binding.bookTitle.setText(bookTitle);
+            binding.bookAuthor.setText(authorFullName);
             binding.executePendingBindings();
         }
     }

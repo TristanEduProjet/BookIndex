@@ -19,7 +19,7 @@ public interface AuthorDao {
     public LiveData<List<Author>> getAuthors();
 
     @Query("SELECT * FROM authors WHERE id = :authorId LIMIT 1")
-    public LiveData<List<Author>> getAuthorById(final int authorId);
+    public LiveData<List<Author>> getAuthorById(final Integer authorId);
 
     @Query("SELECT COUNT(*) FROM authors")
     public int authorsCount();

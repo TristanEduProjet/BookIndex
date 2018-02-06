@@ -5,6 +5,8 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.util.List;
+
 
 @Entity(tableName = "authors",
         indices = {@Index("firstName"), @Index("lastName")})
@@ -14,6 +16,8 @@ public class Author {
     private Integer id;
     private String firstName;
     private String lastName;
+    @Ignore
+    public List<Book> books;
 
     /**
      * Default Constructor
@@ -25,7 +29,7 @@ public class Author {
     public Author() {
     }
 
-    //@Ignore
+    @Ignore
     //Only authorized to AppDatabase, to create Author use AppDatabase.createAuthorInDB()
     public Author(Integer id, String firstName, String lastName) {
         this.id = id;

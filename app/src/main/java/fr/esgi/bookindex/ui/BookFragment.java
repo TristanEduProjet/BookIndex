@@ -1,27 +1,22 @@
 package fr.esgi.bookindex.ui;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import fr.esgi.bookindex.MyBookRecyclerViewAdapter;
 import fr.esgi.bookindex.R;
 import fr.esgi.bookindex.database.AppDatabase;
 import fr.esgi.bookindex.database.BookFragmentRecyclerViewAdapter;
-import fr.esgi.bookindex.database.DatabaseUtils;
 import fr.esgi.bookindex.database.entities.Book;
 import fr.esgi.bookindex.database.viewmodel.BooksViewModel;
 import fr.esgi.bookindex.databinding.FragmentBookListBinding;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class BookFragment extends Fragment {
 
@@ -39,7 +34,7 @@ public class BookFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentBookListBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_book_list, container,  false);
-        BookFragmentRecyclerViewAdapter recyclerViewAdapter = new BookFragmentRecyclerViewAdapter(new ArrayList<>());
+        BookFragmentRecyclerViewAdapter recyclerViewAdapter = new BookFragmentRecyclerViewAdapter(AppDatabase.getInstance(this.getContext()), new ArrayList<>());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         binding.recyclerView.setAdapter(recyclerViewAdapter);
         ViewModelProviders.of(this).get(BooksViewModel.class).getBooks().observe(this, recyclerViewAdapter::setBooks);

@@ -42,11 +42,11 @@ public final class DatabaseUtils {
                 books.add(new Book("Blog Post #3"));
                 this.database.bookDao().insertBooks(books.toArray(new Book[books.size()]));
 
-                final Author VH = new Author("Victor", "Hugo"), HB = new Author("Henri", "Beyle");
+                final Author VH = new Author(1, "Victor", "Hugo"), HB = new Author(1, "Henri", "Beyle");
                 this.database.authorDao().insertAuthors(VH, HB);
-                /*this.database.bookDao().insertBooks(new Book("Les Misérables", VH, "Ceci est une description"),
-                                                    new Book("Claude Gueux", VH, "Ceci est une description"),
-                                                    new Book("Les Rouge et le Noir", HB, "Ceci est une description"));*/
+                this.database.bookDao().insertBooks(new Book("Les Misérables", VH.getId(), "Ceci est une description"),
+                                                    new Book("Claude Gueux", VH.getId(), "Ceci est une description"),
+                                                    new Book("Les Rouge et le Noir", HB.getId(), "Ceci est une description"));
             }
             return null;
         }
